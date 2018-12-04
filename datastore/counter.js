@@ -32,6 +32,7 @@ const writeCounter = (count, callback) => {
       throw ('error writing counter');
     } else {
       callback(null, counterString);
+
     }
   });
 };
@@ -40,15 +41,12 @@ const writeCounter = (count, callback) => {
 
 exports.getNextUniqueId = callback => {
   // Call readCounter to check the current counter file
-  
+  //err, data //data is an object that looks like { id: undefined, text: 'todo1' }
+  readCounter( function (err, count) {
+    var nextId = count + 1;
 
-  readCounter( (err, counter) => {
-    counter = counter + 1;
-
-    writeCounter( counter , callback);
+    writeCounter( nextId , callback); 
   });
-  // counter = counter + 1;
-  // return zeroPaddedNumber(counter);
 };
 
 
