@@ -53,8 +53,8 @@ exports.readOne = (id, callback) => {
           var theLocat = exports.dataDir+'/'+currElem;
           fs.readFile(theLocat, function(error, readTodo) {            
             var todo = {
-            id: id,
-            text: readTodo.toString()
+              id: id,
+              text: readTodo.toString()
             };
             var flag = false;
             callback(null, todo);
