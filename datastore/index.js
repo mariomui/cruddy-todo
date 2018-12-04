@@ -34,23 +34,35 @@ exports.readAll = (callback) => {
       return;
     } else {
       var data = [];
-      // console.log('These are the items:', items);
       _.each(items, (item) => {
         data.push({ id: item.split('.')[0], text: item.split('.')[0] });
       });
       callback(null, data);
     }
-
   });
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  fs.readdir(exports.dataDir, function(error, items) {
+    if(!items.includes(id+'.txt')) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      for(let i = 0; i < items.length; i++) {
+        const currElem = items[i];
+        if(currElem.split('.')[0] === id) {
+          var theLocat = exports.dataDir+'/'+currElem;
+          fs.readFile(theLocat, function(error, readTodo) {            
+            var todo = {
+            id: id,
+            text: readTodo.toString()
+            };
+            var flag = false;
+            callback(null, todo);
+          });
+        }  
+      }
+    }     
+  });
 };
 
 exports.update = (id, text, callback) => {
