@@ -10,8 +10,7 @@ var items = {};
 exports.create = (text, callback) => {
   counter.getNextUniqueId((err, id) => {
     
-    var filelocation = path.join( exports.dataDir, id+'.txt');
-    // console.log(filelocation, 'filelocation');  
+    var filelocation = path.join( exports.dataDir, id+'.txt');  
     fs.writeFile(filelocation, text, (err) => {
       if (err) {
         throw err;
@@ -20,10 +19,7 @@ exports.create = (text, callback) => {
         callback(null, {id, text});
       }
     });
-    // callback(null, { id, text });
   });
-  // items[id] = text;
-
 };
 
 exports.readAll = (callback) => {
@@ -34,8 +30,9 @@ exports.readAll = (callback) => {
       return;
     } else {
       var data = [];
-      _.each(items, (item) => {
-        data.push({ id: item.split('.')[0], text: item.split('.')[0] });
+      _.each(items, (file) => {
+        var id = path.basename(file, '.txt');
+        data.push({ id: id, text: id });
       });
       callback(null, data);
     }
